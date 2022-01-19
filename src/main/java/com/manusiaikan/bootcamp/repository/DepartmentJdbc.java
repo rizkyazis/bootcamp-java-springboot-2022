@@ -67,7 +67,7 @@ public class DepartmentJdbc {
     public List<Department> getListNamedJdbcTemplate() {
         MapSqlParameterSource map = new MapSqlParameterSource();
         return this.namedJdbcTemplate.query(
-                "SELECT * FROM department",
+                "SELECT * FROM department ORDER BY id",
                 new RowMapper<Department>() {
                     @Override
                     public Department mapRow(ResultSet rs, int rowNum) throws SQLException {

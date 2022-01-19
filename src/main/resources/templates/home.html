@@ -80,10 +80,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">x</button>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="form-update-department" th:method="put" th:action="@{/home/department/update}" th:object="${data}">
+                    <form action="" id="form-update-department" th:method="post" th:action="@{/home/department/update}" th:object="${data}">
 
                         <div class="mb-3">
-                            <input type="number" id="id-department"  name="id" />
+                            <input type="number" id="id-department" name="id" th:field="*{id}"/>
                             <label class="form-label">Name</label>
                             <input type="text" class="form-control" name="name"  th:field="*{name}"/>
                         </div>

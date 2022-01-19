@@ -30,7 +30,7 @@ public class HomeAction {
         return "redirect:/home";
     }
 
-    @PutMapping("/department/update")
+    @PostMapping("/department/update")
     public String updateDepartment(@ModelAttribute Department department){
         this.departmentJdbc.updateDepartment(department);
         return "redirect:/home";

@@ -6,7 +6,7 @@ public class Department {
     private String description;
 
     public Department() {
-
+        this.id = 1;
     }
 
     public Department(Integer id, String name, String description) {
@@ -28,7 +28,7 @@ public class Department {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
