@@ -2,6 +2,7 @@ package com.manusiaikan.bootcamp.repository;
 
 import com.manusiaikan.bootcamp.model.Department;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 
@@ -16,6 +17,19 @@ import java.util.List;
 public class DepartmentJdbc {
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    public List<Department> getListDepartmentJdbcTemplate() {
+        String sql = "SELECT department_id, name, description FROM public.department ORDER BY department_id";
+        return jdbcTemplate.query(sql,(result,rowNum)->{
+            Department department = new Department();
+            department.setDescription(result.getString("description"));
+            department.setName(result.getString("name"));
+            department.setId(result.getInt("department_id"));
+            return department;
+        });
+    }
 
     public List<Department> getListDepartmentPS() {
         String sql = "SELECT department_id, name, description FROM public.department ORDER BY department_id";

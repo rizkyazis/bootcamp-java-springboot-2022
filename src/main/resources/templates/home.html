@@ -10,6 +10,8 @@
 <div class="container">
     <h1 class="text-primary">Hello World</h1>
     <h3 th:text="${message}"></h3>
+    <br>
+    <h4>Department Satu</h4>
     <table class="table">
         <tr>
             <th>Id</th>
@@ -17,6 +19,20 @@
             <th>Description</th>
         </tr>
         <tr th:each="department:${departments}">
+            <td th:text="${department.id}"></td>
+            <td th:text="${department.name}"></td>
+            <td th:text="${department.description}"></td>
+        </tr>
+    </table>
+    <hr>
+    <h4>Department Dua</h4>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr th:each="department:${departmentsDua}">
             <td th:text="${department.id}"></td>
             <td th:text="${department.name}"></td>
             <td th:text="${department.description}"></td>

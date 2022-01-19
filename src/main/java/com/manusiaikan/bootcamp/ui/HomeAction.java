@@ -2,6 +2,7 @@ package com.manusiaikan.bootcamp.ui;
 
 import com.manusiaikan.bootcamp.repository.DepartmentJdbc;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ public class HomeAction {
     public String testHome(Model model){
         model.addAttribute("message","This is the message that you got !");
         model.addAttribute("departments",departmentJdbc.getListDepartmentPS());
+        model.addAttribute("departmentsDua",departmentJdbc.getListDepartmentJdbcTemplate());
         return "home";
     }
 
