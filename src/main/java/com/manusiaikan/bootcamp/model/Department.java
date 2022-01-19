@@ -1,9 +1,19 @@
 package com.manusiaikan.bootcamp.model;
 
 public class Department {
-    private int id;
+    private Integer id;
     private String name;
     private String description;
+
+    public Department() {
+
+    }
+
+    public Department(Integer id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
     @Override
     public String toString() {
