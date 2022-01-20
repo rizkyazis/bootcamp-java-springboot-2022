@@ -1,6 +1,8 @@
 package com.manusiaikan.bootcamp;
 
+import com.manusiaikan.bootcamp.model.Category;
 import com.manusiaikan.bootcamp.model.Department;
+import com.manusiaikan.bootcamp.repository.CategoryRepo;
 import com.manusiaikan.bootcamp.repository.DepartmentJdbc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,9 @@ class BootcampApplicationTests {
 
 	@Autowired
 	private DepartmentJdbc departmentJdbc;
+
+	@Autowired
+	private CategoryRepo categoryRepo;
 
 	@Test
 	void contextLoads() {
@@ -55,5 +60,15 @@ class BootcampApplicationTests {
 		Assertions.assertEquals(department.getName(),checkDepartment.getName());
 		Assertions.assertEquals(department.getDescription(),checkDepartment.getDescription());
 		System.out.println(department.toString());
+	}
+
+	@Test
+	void testFindIdCategory() {
+		try {
+			Category dep = this.categoryRepo.findById(1);
+			System.out.println(dep.getName());
+		} catch (EmptyResultDataAccessException erda) {
+			System.out.println("datanya kosong!");
+		}
 	}
 }

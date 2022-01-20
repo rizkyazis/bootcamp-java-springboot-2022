@@ -67,7 +67,7 @@ public class DepartmentJdbc {
     public List<Department> getListNamedJdbcTemplate() {
         MapSqlParameterSource map = new MapSqlParameterSource();
         return this.namedJdbcTemplate.query(
-                "SELECT * FROM department ORDER BY id",
+                "SELECT * FROM department ORDER BY department_id",
                 new RowMapper<Department>() {
                     @Override
                     public Department mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -115,6 +115,17 @@ public class DepartmentJdbc {
 
         String sql = "UPDATE department SET name=:name, description=:description WHERE department_id = :id";
         this.namedJdbcTemplate.update(sql,map);
+        return value;
+    }
+
+    @Transactional
+    public Department deleteDepartment(Department value){
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("id",value.getId());
+        String sql = "DELETE FROM department WHERE department_id =:id";
+
+        this.namedJdbcTemplate.update(sql,map);
+
         return value;
     }
 }

@@ -6,7 +6,7 @@ public class Department {
     private String description;
 
     public Department() {
-        this.id = 1;
+        this.id = null;
     }
 
     public Department(Integer id, String name, String description) {
@@ -24,7 +24,7 @@ public class Department {
                 '}';
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
