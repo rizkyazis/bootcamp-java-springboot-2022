@@ -30,7 +30,8 @@ public class CategoryRepo {
                 "SELECT * FROM category ORDER BY category_id", new RowMapper<Category>() {
                     @Override
                     public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new Category(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4));
+                        Department dept = departmentJdbc.findDepartmentById(rs.getInt(2));
+                        return new Category(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),dept);
                     }
                 }
         );
@@ -44,7 +45,8 @@ public class CategoryRepo {
         return this.namedTemplate.queryForObject("SELECT * FROM category WHERE category_id=:id ORDER BY category_id", map, new RowMapper<Category>() {
                     @Override
                     public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new Category(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4));
+                        Department dept = departmentJdbc.findDepartmentById(rs.getInt(2));
+                        return new Category(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),dept);
                     }
                 }
         );
@@ -59,7 +61,8 @@ public class CategoryRepo {
 
         String sql = "INSERT INTO category (department_id,name,description) VALUES (:department_id,:name,:description)";
         this.namedTemplate.update(sql,map);
-
+        Department dept = departmentJdbc.findDepartmentById(value.getDepartment_id());
+        value.setDepartment(dept);
         return value;
     }
 
@@ -73,6 +76,10 @@ public class CategoryRepo {
 
         String sql = "UPDATE category SET department_id=:department_id, name=:name, description=:description WHERE category_id=:category_id";
         this.namedTemplate.update(sql,map);
+
+        Department dept = departmentJdbc.findDepartmentById(value.getDepartment_id());
+
+        value.setDepartment(dept);
 
         return value;
     }
