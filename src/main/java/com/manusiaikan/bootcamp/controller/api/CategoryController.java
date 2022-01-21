@@ -49,7 +49,7 @@ public class CategoryController {
         this.categoryRepo.delete(id);
         return ResponseEntity.ok("Delete Success");
     }
-g
+
     @GetMapping("/department")
     public List<Category> listDepart(){
         return this.categoryRepo.listWithDepartment();
