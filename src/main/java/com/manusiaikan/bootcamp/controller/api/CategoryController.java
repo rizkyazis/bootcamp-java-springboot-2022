@@ -1,6 +1,7 @@
 package com.manusiaikan.bootcamp.controller.api;
 
 import com.manusiaikan.bootcamp.model.Category;
+import com.manusiaikan.bootcamp.model.Department;
 import com.manusiaikan.bootcamp.repository.CategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -40,6 +41,7 @@ public class CategoryController {
 
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody Category category) throws SQLException {
+
         category = this.categoryRepo.update(category);
         return ResponseEntity.ok(category);
     }
@@ -50,8 +52,4 @@ public class CategoryController {
         return ResponseEntity.ok("Delete Success");
     }
 
-    @GetMapping("/department")
-    public List<Category> listDepart(){
-        return this.categoryRepo.listWithDepartment();
-    }
 }
