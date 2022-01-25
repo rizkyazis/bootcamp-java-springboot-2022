@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 @Controller
@@ -25,13 +26,13 @@ public class HomeAction {
     }
 
     @PostMapping("/department/add")
-    public String addDepartment(@ModelAttribute Department department){
+    public String addDepartment(@ModelAttribute Department department) throws SQLException {
         this.departmentJdbc.insertDepartment(department);
         return "redirect:/home";
     }
 
     @PostMapping("/department/update")
-    public String updateDepartment(@ModelAttribute Department department){
+    public String updateDepartment(@ModelAttribute Department department) throws SQLException {
         this.departmentJdbc.updateDepartment(department);
         return "redirect:/home";
     }

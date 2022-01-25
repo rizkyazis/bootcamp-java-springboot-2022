@@ -1,9 +1,21 @@
 package com.manusiaikan.bootcamp.model;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+
 public class Category {
     private Integer category_id;
+
+    @NotEmpty
+    @Length(min = 4)
     private String name;
+
+    @NotEmpty
+    @Length(min = 4)
     private String description;
+
+    @NotEmpty
     private Department department;
 
     public Category(){

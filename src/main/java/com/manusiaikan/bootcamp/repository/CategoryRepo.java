@@ -7,6 +7,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,17 +55,17 @@ public class CategoryRepo {
     }
 
     @Transactional
-    public Category insert(Category value) throws SQLException{
+    public Integer insert(Category value) throws SQLException{
+    KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource map = new MapSqlParameterSource();
         map.addValue("department_id",value.getDepartment().getId());
         map.addValue("name",value.getName());
         map.addValue("description",value.getDescription());
 
         String sql = "INSERT INTO category (department_id,name,description) VALUES (:department_id,:name,:description)";
-        this.namedTemplate.update(sql,map);
+        this.namedTemplate.update(sql,map,keyHolder);
         Department dept = departmentJdbc.findDepartmentById(value.getDepartment().getId());
-        value.setDepartment(dept);
-        return value;
+        return (Integer) keyHolder.getKeys().get("category_id");
     }
 
     @Transactional
@@ -85,12 +87,13 @@ public class CategoryRepo {
     }
 
     @Transactional
-    public void delete(int id) throws SQLException{
+    public Boolean delete(int id) throws SQLException{
         MapSqlParameterSource map = new MapSqlParameterSource();
         map.addValue("category_id",id);
 
         String sql ="DELETE FROM category WHERE category_id=:category_id";
         this.namedTemplate.update(sql,map);
+        return true;
 
     }
 

@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import javax.sql.DataSource;
@@ -92,22 +93,20 @@ public class DepartmentJdbc {
     }
 
     @Transactional
-    public Department insertDepartment(Department value){
+    public Integer insertDepartment(Department value) throws SQLException{
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         MapSqlParameterSource map = new MapSqlParameterSource();
         map.addValue("name",value.getName());
         map.addValue("description",value.getDescription());
 
-        String sql = "INSERT INTO department (department_id,name,description) VALUES (nextval('department_department_id_seq'),:name,:description)";
-        this.namedJdbcTemplate.update(sql,map,keyHolder,  new String[]{"department_id"});
-        Number key = keyHolder.getKey();
-        value.setId(key.intValue());
-        return value;
+        String sql = "INSERT INTO department (name,description) VALUES (:name,:description)";
+        this.namedJdbcTemplate.update(sql,map,keyHolder);
+        return (Integer) keyHolder.getKeys().get("department_id");
     }
 
     @Transactional
-    public Department updateDepartment(Department value){
+    public Boolean updateDepartment(Department value) throws SQLException{
         MapSqlParameterSource map = new MapSqlParameterSource();
         map.addValue("id",value.getId());
         map.addValue("name",value.getName());
@@ -115,18 +114,16 @@ public class DepartmentJdbc {
 
         String sql = "UPDATE department SET name=:name, description=:description WHERE department_id = :id";
         this.namedJdbcTemplate.update(sql,map);
-        return value;
+        return true;
     }
 
     @Transactional
-    public Department deleteDepartment(Department value){
+    public Boolean deleteDepartment(Integer id) throws SQLException{
         MapSqlParameterSource map = new MapSqlParameterSource();
-        map.addValue("id",value.getId());
+        map.addValue("id",id);
         String sql = "DELETE FROM department WHERE department_id =:id";
-
         this.namedJdbcTemplate.update(sql,map);
-
-        return value;
+        return true;
     }
 }
 
