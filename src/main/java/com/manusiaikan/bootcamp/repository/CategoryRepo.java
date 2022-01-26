@@ -74,7 +74,7 @@ public class CategoryRepo {
         map.addValue("department_id",value.getDepartment().getId());
         map.addValue("name",value.getName());
         map.addValue("description",value.getDescription());
-        map.addValue("category_id",value.getCategory_id());
+        map.addValue("category_id",value.getId());
 
         String sql = "UPDATE category SET department_id=:department_id, name=:name, description=:description WHERE category_id=:category_id";
         this.namedTemplate.update(sql,map);

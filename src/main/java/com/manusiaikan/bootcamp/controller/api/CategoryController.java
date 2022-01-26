@@ -75,11 +75,11 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Map<String,Object>> delete(@Valid @RequestBody Category category) throws SQLException {
+    public ResponseEntity<Map<String,Object>> delete(@RequestBody Category category) throws SQLException {
         Map<String, Object> hasil = new HashMap<>();
         try {
-            this.categoryRepo.findById(category.getCategory_id());
-            this.categoryRepo.delete(category.getCategory_id());
+            this.categoryRepo.findById(category.getId());
+            this.categoryRepo.delete(category.getId());
             hasil.put("status", "Success Deleted Category");
             return ResponseEntity.ok(hasil);
         } catch (EmptyResultDataAccessException e) {

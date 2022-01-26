@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotEmpty;
 
 public class Category {
-    private Integer category_id;
+    private Integer id;
 
     @NotEmpty
     @Length(min = 4)
@@ -15,7 +15,6 @@ public class Category {
     @Length(min = 4)
     private String description;
 
-    @NotEmpty
     private Department department;
 
     public Category(){
@@ -27,19 +26,19 @@ public class Category {
         this.department = department;
     }
 
-    public Category(Integer category_id, String name, String description, Department department) {
-        this.category_id = category_id;
+    public Category(Integer id, String name, String description, Department department) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.department = department;
     }
 
-    public Integer getCategory_id() {
-        return category_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCategory_id(Integer category_id) {
-        this.category_id = category_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -69,7 +68,7 @@ public class Category {
     @Override
     public String toString() {
         return "Category{" +
-                "category_id=" + category_id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", department=" + department +
