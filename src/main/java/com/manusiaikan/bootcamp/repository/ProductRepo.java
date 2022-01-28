@@ -1,6 +1,7 @@
 package com.manusiaikan.bootcamp.repository;
 
 
+import com.manusiaikan.bootcamp.model.DataTableRequest;
 import com.manusiaikan.bootcamp.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Transactional(readOnly = true)
@@ -22,9 +25,21 @@ public class ProductRepo {
     private NamedParameterJdbcTemplate namedTemplate;
 
     @Transactional
-    public List<Product> list() {
-        return this.namedTemplate.query(
-                "SELECT product_id, name, description, price FROM product ORDER BY product_id", new RowMapper<Product>() {
+    public List<Product> list(DataTableRequest request) {
+        Map<String,Object> extraParam =  request.getExtraParam();
+        String name = (String) extraParam.get("name");
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("limit",request.getLength());
+        paramMap.put("offset",request.getStart());
+        paramMap.put("name",name);
+
+        String sql = "SELECT product_id, name, description, price FROM product"
+                +" WHERE 1=1 and name ilike '%'||:name||'%' ORDER BY "
+                +(request.getSortCol()+1)+" "+ request.getSortDir() +" "
+                + "limit :limit offset  :offset ";
+
+        return this.namedTemplate.query(sql,paramMap, new RowMapper<Product>() {
                     @Override
                     public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
                         Product product = new Product();
@@ -36,6 +51,18 @@ public class ProductRepo {
                     }
                 }
         );
+    }
+
+    @Transactional
+    public Long countProduct(DataTableRequest request){
+        Map<String,Object> extraParam =  request.getExtraParam();
+        String name = (String) extraParam.get("name");
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("name",name);
+        String sql =  "SELECT COUNT(distinct(product_id)) as total from product " +
+                " WHERE 1=1 and name ilike '%'||:name||'%' ";
+        return namedTemplate.queryForObject(sql,paramMap,Long.class);
     }
 
     @Transactional
@@ -58,5 +85,7 @@ public class ProductRepo {
                 }
         );
     }
+
+
 }
 

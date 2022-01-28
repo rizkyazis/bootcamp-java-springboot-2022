@@ -1,18 +1,14 @@
 package com.manusiaikan.bootcamp.controller.api;
 
 
-import com.manusiaikan.bootcamp.model.Department;
+import com.manusiaikan.bootcamp.model.DataTableRequest;
+import com.manusiaikan.bootcamp.model.DataTableResponse;
 import com.manusiaikan.bootcamp.model.Product;
 import com.manusiaikan.bootcamp.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/products")
@@ -21,9 +17,16 @@ public class ProductController {
     @Autowired
     ProductRepo productRepo;
 
-    @GetMapping("")
-    public List<Product> list() {
-        return this.productRepo.list();
+    @PostMapping("")
+    public ResponseEntity< DataTableResponse<Product>> list(@RequestBody DataTableRequest request) {
+
+        DataTableResponse<Product> response = new DataTableResponse<>();
+        response.setData(productRepo.list(request));
+        response.setDraw(request.getDraw());
+        Long total = productRepo.countProduct(request);
+        response.setRecordsFiltered(total);
+        response.setRecordsTotal(total);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
